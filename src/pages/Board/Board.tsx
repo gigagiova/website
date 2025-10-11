@@ -87,7 +87,7 @@ export function Board() {
           {/* Loading state */}
           {loading && (
             <div className="text-center text-gray-400 text-xl">
-              Loading vibes...
+              Loading...
             </div>
           )}
 

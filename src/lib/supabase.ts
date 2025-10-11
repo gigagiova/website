@@ -8,3 +8,4 @@ const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || ''
 // Create and export the Supabase client instance
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
+

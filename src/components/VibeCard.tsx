@@ -28,51 +28,87 @@ export function VibeCard({ card, onClick }: VibeCardProps) {
         className="group cursor-pointer backdrop-blur-md rounded-2xl overflow-hidden border border-white/10 hover:border-white/30 transition-all duration-300 hover:scale-[1.02] shadow-xl hover:shadow-2xl"
         >
       
-      {/* Display image if present */}
+      {/* Display image if present with superimposed title and description */}
       {card.image_url && (
-        <div className="w-full aspect-video overflow-hidden">
+        <div className="w-full aspect-video overflow-hidden relative">
           <img 
             src={card.image_url} 
             alt={card.title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
+          {/* Gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+          
+          {/* Title and description superimposed on image */}
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            {/* Card title */}
+            <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors" style={{ fontFamily: "'Spectral', serif" }}>
+              {card.title}
+            </h3>
+
+            {/* Description text */}
+            {card.description && (
+              <p className="text-gray-200 text-sm">
+                {card.description}
+              </p>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Display YouTube video if present */}
+      {/* Display YouTube video if present with superimposed title and description */}
       {card.video_url && getYouTubeId(card.video_url) && (
-        <div className="w-full aspect-video bg-black/20">
+        <div className="w-full aspect-video bg-black/20 relative overflow-hidden">
           <img
             src={`https://img.youtube.com/vi/${getYouTubeId(card.video_url)}/maxresdefault.jpg`}
             alt={card.title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
+          {/* Gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+          
+          {/* Title and description superimposed on video thumbnail */}
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            {/* Card title */}
+            <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors" style={{ fontFamily: "'Spectral', serif" }}>
+              {card.title}
+            </h3>
+
+            {/* Description text */}
+            {card.description && (
+              <p className="text-gray-200 text-sm mt-2">
+                {card.description}
+              </p>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Card content section */}
-      <div className="p-6">
-        {/* Card title */}
-        <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors" style={{ fontFamily: "'Spectral', serif" }}>
-          {card.title}
-        </h3>
+      {/* Card content section - only show if no image/video */}
+      {(!card.image_url && !card.video_url) && (
+        <div className="p-6">
+          {/* Card title */}
+          <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors" style={{ fontFamily: "'Spectral', serif" }}>
+            {card.title}
+          </h3>
 
-        {/* Description text */}
-        {card.description && (
-          <p className="text-gray-400 text-sm mb-4">
-            {card.description}
-          </p>
-        )}
+          {/* Description text */}
+          {card.description && (
+            <p className="text-gray-400 text-sm mb-3">
+              {card.description}
+            </p>
+          )}
 
-        {/* Markdown content preview (truncated) */}
-        {card.content && (
-          <div className="prose prose-invert prose-sm max-w-none text-gray-300 line-clamp-3">
-            <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>
-              {card.content}
-            </ReactMarkdown>
-          </div>
-        )}
-      </div>
+          {/* Markdown content preview (truncated) */}
+          {card.content && (
+            <div className="prose prose-invert prose-sm max-w-none text-gray-300 line-clamp-3">
+              <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>
+                {card.content}
+              </ReactMarkdown>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
