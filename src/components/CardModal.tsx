@@ -99,8 +99,8 @@ export function CardModal({ card, isOpen, onClose }: CardModalProps) {
             </div>
           </div>
         ) : card.video_url && getYouTubeId(card.video_url) ? (
-          // Display YouTube video with superimposed title and description
-          <div className="w-full aspect-video sm:rounded-t-3xl overflow-hidden relative">
+          // Display YouTube video without overlay text
+          <div className="w-full aspect-video sm:rounded-t-3xl overflow-hidden">
             <iframe
               src={`https://www.youtube.com/embed/${getYouTubeId(card.video_url)}`}
               title={card.title}
@@ -108,27 +108,13 @@ export function CardModal({ card, isOpen, onClose }: CardModalProps) {
               allowFullScreen
               className="w-full h-full"
             />
-            {/* Gradient overlay for text readability */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent pointer-events-none"></div>
-            
-            {/* Title and description superimposed on video */}
-            <div className="absolute bottom-0 left-0 right-0 p-8 pointer-events-none">
-              <h2 className="text-4xl md:text-5xl font-bold text-white font-spectral">
-                {card.title}
-              </h2>
-              {card.description && (
-                <p className="text-gray-200 text-lg mt-2 leading-relaxed font-georgia">
-                  {card.description}
-                </p>
-              )}
-            </div>
           </div>
         ) : null}
 
         {/* Content section */}
         <div className="px-8 py-10 md:px-12 md:py-12">
-          {/* For text-only cards, show title and description here */}
-          {!card.image_url && !card.video_url && (
+          {/* For text-only cards and video cards, show title and description here */}
+          {!card.image_url && (
             <>
               <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-spectral">
                 {card.title}

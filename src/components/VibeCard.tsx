@@ -60,7 +60,7 @@ export function VibeCard({ card, onClick }: VibeCardProps) {
       {card.video_url && getYouTubeId(card.video_url) && (
         <div className="w-full aspect-video bg-black/20 relative overflow-hidden">
           <img
-            src={`https://img.youtube.com/vi/${getYouTubeId(card.video_url)}/maxresdefault.jpg`}
+            src={`https://img.youtube.com/vi/${getYouTubeId(card.video_url)}/hqdefault.jpg`}
             alt={card.title}
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
