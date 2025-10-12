@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { cardService } from '../../services/cardService'
 import { Card } from '../../types/card'
 import { CardModal } from '../../components/CardModal'
@@ -18,25 +18,45 @@ export function Board() {
   // State to track which card is selected for modal display
   const [selectedCard, setSelectedCard] = useState<Card | null>(null)
 
+  // Function to shuffle array using Fisher-Yates algorithm
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+  }
+
   // Fetch cards on component mount
   useEffect(() => {
-    loadCards()
-  }, [])
-
-  // Function to load cards from Supabase
-  const loadCards = async () => {
     try {
       setLoading(true)
       setError(null)
-      const data = await cardService.getAllCards()
-      setCards(data)
+      cardService.getAllCards()
+      .then((data) => {
+      // Randomize the order of cards before setting state
+      const shuffledCards = shuffleArray(data)
+      for (let i = shuffledCards.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledCards[i], shuffledCards[j]] = [shuffledCards[j], shuffledCards[i]]
+        }
+        setCards(shuffledCards)
+      })
+      .catch((err) => {
+        console.error('Failed to load cards:', err)
+        setError('Failed to load vibes. Please try again later.')
+      })
+      .finally(() => {
+        setLoading(false)
+      })
     } catch (err) {
       console.error('Failed to load cards:', err)
       setError('Failed to load vibes. Please try again later.')
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
 
   // Function to open card in modal
   const handleCardClick = (card: Card) => {
@@ -68,24 +88,13 @@ export function Board() {
       <div className="absolute inset-0 grain-overlay pointer-events-none"></div>
 
       {/* Content container */}
-      <div className="relative z-10">
-        {/* Navigation bar at the top */}
-        <nav className="flex justify-between items-center p-8">
-          {/* Home link */}
-          <a 
-            href="/" 
-            className="text-gray-300 hover:text-white text-lg font-light tracking-wide"
-          >
-            ← HOME
-          </a>
-        
-        </nav>
-
-        {/* Main content area */}
-        <main className="max-w-7xl mx-auto px-8 py-12">
+      <div className="relative z-10 max-w-7xl mx-auto px-8 py-12">
+          <h2 className="text-gray-100 w-full text-center text-3xl font-serif font-normal tracking-tight mb-12">
+            A based man is truthful to his cringe self
+          </h2>
 
           {/* Loading state */}
-          {loading && (
+          {cards.length === 0 && (
             <div className="text-center text-gray-400 text-xl">
               Loading...
             </div>
@@ -110,14 +119,6 @@ export function Board() {
               ))}
             </div>
           )}
-
-          {/* Empty state */}
-          {!loading && !error && cards.length === 0 && (
-            <div className="text-center text-gray-400 text-xl">
-              No vibes yet. Start adding some!
-            </div>
-          )}
-        </main>
       </div>
 
       {/* Card Modal - shows when a card is selected */}
