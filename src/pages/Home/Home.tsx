@@ -67,13 +67,13 @@ export function Home() {
             </p>
 
             <p className="text-xl md:text-xl font-light leading-relaxed">
-              Gathering vibes{' '}
               <a 
                 href="/board" 
                 className="link-underline text-yellow-400"
               >
-                here
+                Here
               </a>
+              {' '}I pin what I find interesting
             </p>
           </div>
         </main>
