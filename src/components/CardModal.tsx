@@ -47,14 +47,14 @@ export function CardModal({ card, isOpen, onClose }: CardModalProps) {
   return (
     // Full screen overlay - no dark background, click outside to close
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-8"
+      className="fixed inset-0 z-50 flex items-center justify-center sm:p-6 md:p-8"
       onClick={onClose}
     >
-      {/* Modal content container - glassy transparent card */}
-      <div 
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-white/8 backdrop-blur-xl rounded-3xl border border-white/20 shadow-2xl"
-        onClick={(e) => e.stopPropagation()}
-      >
+        {/* Modal content container - glassy darker card. On mobile: full screen. On larger screens: centered with padding */}
+        <div 
+          className="relative w-full h-full sm:h-auto sm:max-w-4xl sm:max-h-[90vh] overflow-y-auto bg-black/40 backdrop-blur-xl sm:rounded-3xl sm:border sm:border-white/20 shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
         {/* Close button */}
         <button
           onClick={onClose}
@@ -74,9 +74,10 @@ export function CardModal({ card, isOpen, onClose }: CardModalProps) {
           </svg>
         </button>
 
-        {/* Display image if present with superimposed title and description */}
-        {card.image_url && (
-          <div className="w-full aspect-video overflow-hidden rounded-t-3xl relative">
+        {/* Check if card has media (image or video) */}
+        {card.image_url ? (
+          // Display image with superimposed title and description
+          <div className="w-full aspect-video overflow-hidden sm:rounded-t-3xl relative">
             <img 
               src={card.image_url} 
               alt={card.title}
@@ -87,24 +88,19 @@ export function CardModal({ card, isOpen, onClose }: CardModalProps) {
             
             {/* Title and description superimposed on image */}
             <div className="absolute bottom-0 left-0 right-0 p-8">
-              {/* Card title */}
-              <h2 className="text-4xl md:text-5xl font-bold text-white" style={{ fontFamily: "'Spectral', serif" }}>
+              <h2 className="text-4xl md:text-5xl font-bold text-white font-spectral">
                 {card.title}
               </h2>
-
-              {/* Description text */}
               {card.description && (
-                <p className="text-gray-200 text-lg mt-2 leading-relaxed">
+                <p className="text-gray-200 text-lg mt-2 leading-relaxed font-georgia">
                   {card.description}
                 </p>
               )}
             </div>
           </div>
-        )}
-
-        {/* Display YouTube video if present with superimposed title and description */}
-        {card.video_url && getYouTubeId(card.video_url) && (
-          <div className="w-full aspect-video rounded-t-3xl overflow-hidden relative">
+        ) : card.video_url && getYouTubeId(card.video_url) ? (
+          // Display YouTube video with superimposed title and description
+          <div className="w-full aspect-video sm:rounded-t-3xl overflow-hidden relative">
             <iframe
               src={`https://www.youtube.com/embed/${getYouTubeId(card.video_url)}`}
               title={card.title}
@@ -117,58 +113,43 @@ export function CardModal({ card, isOpen, onClose }: CardModalProps) {
             
             {/* Title and description superimposed on video */}
             <div className="absolute bottom-0 left-0 right-0 p-8 pointer-events-none">
-              {/* Card title */}
-              <h2 className="text-4xl md:text-5xl font-bold text-white" style={{ fontFamily: "'Spectral', serif" }}>
+              <h2 className="text-4xl md:text-5xl font-bold text-white font-spectral">
                 {card.title}
               </h2>
-
-              {/* Description text */}
               {card.description && (
-                <p className="text-gray-200 text-lg mt-2 leading-relaxed">
+                <p className="text-gray-200 text-lg mt-2 leading-relaxed font-georgia">
                   {card.description}
                 </p>
               )}
             </div>
           </div>
-        )}
+        ) : null}
 
-        {/* Modal content section - only show markdown content if present */}
-        {card.content && (
-          <div className="p-8">
-            {/* Full markdown content */}
-            <div className="prose prose-invert prose-lg max-w-none text-gray-200">
+        {/* Content section */}
+        <div className="px-8 py-10 md:px-12 md:py-12">
+          {/* For text-only cards, show title and description here */}
+          {!card.image_url && !card.video_url && (
+            <>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4 font-spectral">
+                {card.title}
+              </h2>
+              {card.description && (
+                <p className="text-gray-300 text-xl mb-8 leading-relaxed font-georgia">
+                  {card.description}
+                </p>
+              )}
+            </>
+          )}
+
+          {/* Markdown content - shown for all cards if present */}
+          {card.content && (
+            <div className="prose prose-invert text-xl max-w-none text-gray-200 leading-[1.6] space-y-6 font-georgia">
               <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>
                 {card.content}
               </ReactMarkdown>
             </div>
-          </div>
-        )}
-
-        {/* Show content section for cards without image/video */}
-        {!card.image_url && !card.video_url && (
-          <div className="p-8">
-            {/* Card title */}
-            <h2 className="text-4xl md:text-5xl font-bold text-white" style={{ fontFamily: "'Spectral', serif" }}>
-              {card.title}
-            </h2>
-
-            {/* Description text */}
-            {card.description && (
-              <p className="text-gray-300 text-lg mb-6 leading-relaxed">
-                {card.description}
-              </p>
-            )}
-
-            {/* Full markdown content */}
-            {card.content && (
-              <div className="prose prose-invert prose-lg max-w-none text-gray-200">
-                <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>
-                  {card.content}
-                </ReactMarkdown>
-              </div>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

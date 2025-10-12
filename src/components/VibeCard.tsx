@@ -42,13 +42,13 @@ export function VibeCard({ card, onClick }: VibeCardProps) {
           {/* Title and description superimposed on image */}
           <div className="absolute bottom-0 left-0 right-0 p-6">
             {/* Card title */}
-            <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors" style={{ fontFamily: "'Spectral', serif" }}>
+            <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors font-spectral">
               {card.title}
             </h3>
 
             {/* Description text */}
             {card.description && (
-              <p className="text-gray-200 text-sm">
+              <p className="text-gray-200 text-sm font-georgia">
                 {card.description}
               </p>
             )}
@@ -70,13 +70,13 @@ export function VibeCard({ card, onClick }: VibeCardProps) {
           {/* Title and description superimposed on video thumbnail */}
           <div className="absolute bottom-0 left-0 right-0 p-6">
             {/* Card title */}
-            <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors" style={{ fontFamily: "'Spectral', serif" }}>
+            <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors font-spectral">
               {card.title}
             </h3>
 
             {/* Description text */}
             {card.description && (
-              <p className="text-gray-200 text-sm mt-2">
+              <p className="text-gray-200 text-sm mt-2 font-georgia">
                 {card.description}
               </p>
             )}
@@ -88,20 +88,20 @@ export function VibeCard({ card, onClick }: VibeCardProps) {
       {(!card.image_url && !card.video_url) && (
         <div className="p-6">
           {/* Card title */}
-          <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors" style={{ fontFamily: "'Spectral', serif" }}>
+          <h3 className="text-2xl font-semibold text-white group-hover:text-blue-200 transition-colors font-spectral">
             {card.title}
           </h3>
 
           {/* Description text */}
           {card.description && (
-            <p className="text-gray-400 text-sm mb-3">
+            <p className="text-gray-400 text-sm mb-3 font-georgia">
               {card.description}
             </p>
           )}
 
           {/* Markdown content preview (truncated) */}
           {card.content && (
-            <div className="prose prose-invert prose-sm max-w-none text-gray-300 line-clamp-3">
+            <div className="prose prose-invert prose-sm max-w-none text-gray-300 line-clamp-3 font-georgia">
               <ReactMarkdown remarkPlugins={[remarkBreaks, remarkGfm]}>
                 {card.content}
               </ReactMarkdown>
