@@ -52,7 +52,7 @@ export function CardModal({ card, isOpen, onClose }: CardModalProps) {
     >
         {/* Modal content container - glassy darker card. On mobile: full screen. On larger screens: centered with padding */}
         <div 
-          className="relative w-full h-full sm:h-auto sm:max-w-4xl sm:max-h-[90vh] overflow-y-auto bg-black/40 backdrop-blur-xl sm:rounded-3xl sm:border sm:border-white/20 shadow-2xl"
+          className="relative w-full h-full sm:h-auto sm:max-w-4xl sm:max-h-[90vh] overflow-y-auto scrollbar-inset bg-slate-900/40 backdrop-blur-3xl backdrop-saturate-200 backdrop-brightness-75 sm:rounded-3xl sm:border sm:border-white/20 shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
         {/* Close button */}

@@ -210,3 +210,32 @@
     border-radius: 0.5rem;
   }
 }
+
+/* Inset scrollbar utility: creates visual top/bottom gaps so the thumb
+   does not touch rounded corners, without changing layout/content */
+@layer utilities {
+  .scrollbar-inset {
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+  }
+
+  .scrollbar-inset::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .scrollbar-inset::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollbar-inset::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.35);
+    border-radius: 9999px;
+    /* Top/bottom borders create the visible inset so the thumb
+       never reaches the very top/bottom of the track */
+    border-top: 80px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    background-clip: padding-box;
+  }
+}
