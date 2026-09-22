@@ -12,8 +12,8 @@ export function Home() {
     <div className="relative min-h-screen bg-[#191816] overflow-hidden">
 
       {/* Content */}
-      <div className="relative z-10 flex items-center min-h-screen px-8 pt-16 pb-36 md:px-16 lg:px-24">
-        <div className="max-w-2xl">
+      <div className="relative z-10 flex items-center justify-center min-h-screen px-8 pt-16 pb-36 md:px-16 lg:px-24">
+        <div className="w-full max-w-xl">
           <h1 className="text-[clamp(2rem,4vw,3rem)] leading-[1.15] text-[#E8E4DF] font-normal italic tracking-[-0.03em]"
             style={{ fontFamily: "'Spectral', serif" }}>
             Hi, I’m Giovanni
